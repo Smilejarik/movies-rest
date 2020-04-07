@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+	<div width=400px>
+		<H3>RAW output:</H3>
+			<p class="raw_output">{{ new_movie }}</p>
+
+		<H3>Sorted output:</H3>
+		<ul>
+			{% for key, value in new_movie.items %}
+				<li class="li_item">{{ key }} is: {{ value }}</li>
+
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock content %}

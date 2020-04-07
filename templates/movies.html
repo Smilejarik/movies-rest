@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+	<div class="bg_frame">
+		<H2>Movies in database:</H2>
+			<form action="/movies/" method="post" class="add_form">{% csrf_token %}
+				<p>Sort by:
+					<select name="sorting_way" class="filter_btn">
+						<option value = "id">ID</option>
+						<option value = "title">Title</option>
+						<option value = "year">Year</option>
+						<option value = "director">Director</option>
+						<option value = "top_comments">Top Comments</option>
+					</select>
+
+					<input type="submit" class="filter_btn" value="Sort">
+				</p>
+			</form>
+		<div width=400px>
+			<ul>
+				{% for movie in all_movies %}
+				<li class="li_item">{{ movie.id }}.
+					<img src="{{ movie.poster }}" width="60" height="90" style="float: left;">
+					<b>{{ movie.title }}</b>, ({{ movie.year }}),
+					<p>Director: <b>{{ movie.director }}</b>,</p>
+					<p>Comments count: {{ movie.commentitem_set.count }}</p></li>
+
+				{% endfor %}
+			</ul>
+		</div>
+
+		<p>
+			<fieldset class="fieldset_comment">
+			  <legend>Add Comment</legend>
+					<textarea form="post_comment" cols="50" name="comment_body" required></textarea>
+					<form id="post_comment" action="/comments/" method="post" class="add_form">{% csrf_token %}
+						<label>Movie id:</label>
+							 <select name="movie_id" required>
+								 {% for movie in all_movies %}
+							   		<option value = "{{ movie.id }}">{{ movie.id }}</option>
+								 {% endfor %}
+							 </select>
+						<input type="submit" value="Add Comment">
+					</form>
+			</fieldset>
+		</p>
+	</div>
+{% endblock content %}

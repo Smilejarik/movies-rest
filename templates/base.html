@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Movies App</title>
+	<style>
+		ul li {
+  			background: #FFFFFF;
+  			margin: 10px;
+  			width: 90%;
+  			text-align: left;
+		}
+		.bg_frame{
+			width: 900px;
+			background-color: #EFEFEF;
+			margin: 0 auto;
+			text-align: center;
+		}
+		.fieldset_year{
+			width: 230px;
+			margin: 0 auto;
+			text-align: center;
+		}
+		.fieldset_comment{
+			width: 430px;
+			margin: 0 auto;
+			text-align: center;
+		}
+		input.filter {
+		  float: right;
+		  clear: both;
+		}
+		input[type=number]{
+    		width: 50px;
+		}
+		.filter_btn {
+			display: inline;
+		}
+		.raw_output {
+			width: 850px;
+			background-color: #FFFFFF;
+			margin: 0 auto;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="bg_frame">
+		<H1>Movies App</H1>
+		<p>
+			<a href="/movies/">Movies</a> |
+			<a href="/comments/">Comments</a> |
+			<a href="/top/">Top Movies</a>
+		</p>
+
+		{% block content %}{% endblock %}
+
+		Add movie by title:
+		<form action="/movies/" method="post" class="add_form">{% csrf_token %}
+			<input type="text" class="filter_btn" name="movie_title" required>
+			<input type="submit" class="filter_btn" value="Add Movie">
+		</form>
+
+	</div>
+</body>
+</html>
