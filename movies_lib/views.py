@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 import requests
 from django.db.models import Count
 from django.template.defaulttags import register
+from django.views.decorators.csrf import csrf_exempt
 
 
 @register.filter
@@ -14,7 +15,7 @@ def get_item(dictionary, key):
 # omdapi.com API key
 api_key = 'apikey=8a9a1640'
 
-
+@csrf_exempt
 def handle_movies(request):
 	all_movies = MovieItem.objects.all()
 
@@ -31,7 +32,10 @@ def handle_movies(request):
 		except Exception:
 			pass
 
-		title_to_add = request.POST['movie_title']
+		try:
+			title_to_add = request.POST['movie_title']
+		except Exception:
+			return HttpResponse("<h2>Error: No movie title provided</h2>")
 
 		response = requests.get(f'http://www.omdbapi.com/?t={title_to_add}&{api_key}')
 		if response.status_code != 200:
@@ -58,6 +62,7 @@ def handle_movies(request):
 	return render(request, "movies.html", {'all_movies': all_movies})
 
 
+@csrf_exempt
 def handle_comments(request):
 	all_comments = CommentItem.objects.all()
 
@@ -94,6 +99,7 @@ def filter_by_movie(request, movie_id):
 		return HttpResponse("<h3>Error: No such movie</h3>")
 
 
+@csrf_exempt
 def top_movies(request):
 	if request.method == "POST":
 		try:
